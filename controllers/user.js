@@ -31,25 +31,42 @@ if(params.password && params.name && params.surname && params.email){
     user.email =params.email;
     user.role = 'ROLE_USER';
     user.image = null;
+    //V50 controlar usuarios duplicados 
 
-    //encriptar password
+    User.findOne({email: user.email.toLowerCase()},(err, issetUser) => {
+        if(err){
+            res.status(500).send({message:'Error al comprobar el usuario'});
 
-    bcrypt.hash(params.password, null, null, function(err, hash){
-        user.password = hash;
-        //guardar usuario en base de datos 
-        user.save((err, userStored) => {
-            if (err){
-                res.status(500).send({message: 'ERRORO AL GUARDAR USUARIO'});
-            } else{
-                if(!userStored){
-                    res.status(400).send({message: 'No se ha registrado el usuario'});
-                }else {
-                    res.status(200).send({user: userStored});
+        }else{
+            if(!issetUser){
+
+            //encriptar password
+            bcrypt.hash(params.password, null, null, function(err, hash){
+            user.password = hash;
+            //guardar usuario en base de datos 
+            user.save((err, userStored) => {
+                if (err){
+                    res.status(500).send({message: 'ERRORO AL GUARDAR USUARIO'});
+                } else{
+                    if(!userStored){
+                        res.status(400).send({message: 'No se ha registrado el usuario'});
+                    }else {
+                        res.status(200).send({user: userStored});
+                    }
                 }
-            }
+            });
         });
-
+            }else{
+                res.status(200).send({
+                    message: 'El usuario no puede registrate'
+                });
+            }
+        }
     });
+
+
+
+    
 }else{
     res.status(200).send({
         message: 'Introduce los datos correctamente para poder registar el usuario' 

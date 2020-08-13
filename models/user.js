@@ -11,4 +11,4 @@ var UserSchema = Schema({
 
 });
 
-module.exports = moongose.model (User, UserSchema);
+module.exports = moongose.model ('User', UserSchema);

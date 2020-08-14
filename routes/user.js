@@ -11,6 +11,8 @@ var api = exppress.Router();
 api.get('/pruebas-del-controlador', UserController.pruebas);
 //ruta guardar usuario
 api.post('/register',UserController.saveUser);
+//v50 ruta login 
+api.post('/login',UserController.login);
 
 //exportar objeto de rutas 
 

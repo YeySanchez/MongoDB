@@ -6,9 +6,12 @@ var UserController = require('../controllers/user');
 const { get } = require('mongoose');
 //cargar router 
 var api = exppress.Router();
-
+//v54 cargar ruta del middleware
+var md_auth = require('../middlewares/authenticaded')
 //crear ruta 
-api.get('/pruebas-del-controlador', UserController.pruebas);
+//v54 para agregar la propiedad middleeare la agregamos con lavariable y 
+//el metoto creado ejemplo md_auth.ensureAuth
+api.get('/pruebas-del-controlador',md_auth.ensureAuth, UserController.pruebas);
 //ruta guardar usuario
 api.post('/register',UserController.saveUser);
 //v50 ruta login 

@@ -14,7 +14,9 @@ var jwt = require('../services/jwt');
 //metodo acciones
 function pruebas (req, res){
     res.status(200).send({
-        message: 'Probando el controlador de ususuarios y la accion de prueba'
+        message: 'Probando el controlador de ususuarios y la accion de prueba',
+        //añadir el usuario que se esta autenticando en el token v54
+        user: req.user
 
     });
 } 

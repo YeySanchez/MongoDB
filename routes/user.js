@@ -16,6 +16,8 @@ api.get('/pruebas-del-controlador',md_auth.ensureAuth, UserController.pruebas);
 api.post('/register',UserController.saveUser);
 //v50 ruta login 
 api.post('/login',UserController.login);
+//v54 update user
+api.put('/update-user/:id',md_auth.ensureAuth, UserController.updadateUser);
 
 //exportar objeto de rutas 
 

@@ -2,6 +2,8 @@
 //cargar modulo de usuario
 //cargar libreri bcrypt 
 var bcrypt = require ('bcrypt-nodejs');
+//v55 modulo carcar imagen
+var fs =require('fs');
 
 //modelos 
 var User = require('../models/user');
@@ -10,6 +12,7 @@ const user = require('../models/user');
 // servicios 
 //v53 servicio token jwt
 var jwt = require('../services/jwt');
+const { update } = require('../models/user');
 
 //metodo acciones
 function pruebas (req, res){
@@ -148,9 +151,52 @@ if (err){
 });
     
 }
+//v55 crear metodo cargar imagen del usuario 
+ function uploadImage(req, res){
+    var userId = req.params.id;
+    var file_name ='no subido...';
+    if(req.files){
+        var file_path =req.files.image.path;
+        var file_split = file_path.split('\\');
+        var file_name = file_split[2];
+        var ext_split =file_name.split('\.');
+        var file_ext =ext_split[1];
+        if(file_ext == 'png'|| file_ext == 'jpg'|| file_ext == 'jpeg'|| file_ext == 'gif'){
+
+            if(userId != req.user.sub){
+                return res.status(500).send({message:'no tienes permiso para actualizar el usuario'})
+            }
+            User.findByIdAndUpdate(userId, {image: file_name}, {new:true},(err,userUpdated) =>{
+            if (err){
+                res.status(500).send({
+                message: "error al actualizar usuario"
+                });
+            }else{
+                if(!userUpdated){ 
+                    res.status(404).send({message:'No se ha podido actualizar el usuario'});
+                }else{
+                    res.status(200).send({user: userUpdated,image:file_name});
+                }
+            }
+            });
+        }else {
+            fs.unlink(file_path,(err)=>{
+                if(err){
+                    res.status(200).send({message:'la estension no es vAlida y el fichero'});  
+                }else{
+                    res.status(200).send({message:'la estension no es valida'});
+                }
+            });
+           
+        }
+     }else{
+         res.status(200).send({message:'No se ha subido archivos'});
+     }
+ }
 module.exports= {
     pruebas,
     saveUser,
     login,
-    updadateUser
+    updadateUser,
+    uploadImage
 };

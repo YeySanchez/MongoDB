@@ -24,6 +24,10 @@ api.post('/login',UserController.login);
 api.put('/update-user/:id',md_auth.ensureAuth, UserController.updadateUser);
  //v55 uploadImage
  api.post('/upload-image-user/:id',[md_auth.ensureAuth,md_upload],UserController.uploadImage);
+ //v56 ruta devolver imagen usuario 
+ api.get('/get-image-file/:imageFile',UserController.getImageFile);
+ //v57 metodo keepers
+ api.get('/keepers',UserController.getKeepers);
 
 
 //exportar objeto de rutas 

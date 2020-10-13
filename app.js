@@ -9,6 +9,7 @@ var app =express();
 //rutas user.js
 
 var user_routes = require('./routes/user');
+var user_routes = require('./routes/animal');
 
 //middlewares de body-parser
 app.use(bodyParser.urlencoded({extended:false}));

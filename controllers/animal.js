@@ -5,6 +5,7 @@ var path = require('path');
 //modelos 
 var User = require('../models/user');
 var Animal = require('../models/animal');
+const animal = require('../models/animal');
 
 //acciones 
 function pruebas(req, res) {
@@ -51,7 +52,7 @@ function getAnimals(req, res) {
     Animal.find({}).populate({ path: 'user' }).exec((err, animals) => {
         if (err) {
             res.status(500).send({
-                message: 'No hay animales'
+                message: 'error en la peticion'
             });
         }else{
             if(!animals){
@@ -66,8 +67,30 @@ function getAnimals(req, res) {
         }
     });
 }
+function getAnimal(req,res){
+    var animalid =req.params.id;
+    Animal.findById(animalid).populate({path:'user'}).exec((err,animal)=>{
+        if (err) {
+            res.status(500).send({
+                message: 'Error en la peticion'
+            });
+        }else{
+            if(!animal){
+                res.status(404).send({
+                    message:'el animal no existe'
+                });
+            }else{
+                res.status(200).send({
+                    animal
+                });
+            }
+        }
+
+    });
+}
 module.exports = {
     pruebas,
     SaveAnimal,
-    getAnimals
+    getAnimals,
+    getAnimal
 }

@@ -12,6 +12,10 @@ api.get('/pruebas-animales',md_auth.ensureAuth, AnimalController.pruebas);
 api.post('/animal',md_auth.ensureAuth, AnimalController.SaveAnimal);
 //metodo listar animal
 api.get('/animals',AnimalController.getAnimals);
+//metodo listar animal unico 
+api.get('/animal/:id',AnimalController.getAnimal);
+
+
 
 
 module.exports = api;

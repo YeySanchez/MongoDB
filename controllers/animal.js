@@ -88,9 +88,34 @@ function getAnimal(req,res){
 
     });
 }
+function updateAnimal(req, res){
+    var animalId = req.params.id;
+    var update = req.body;
+Animal.findByIdAndUpdate(animalId,update,{new:true},(err, animalUpdated) =>{
+if(err){
+    res.status(500).send({
+        message: 'Error en la peticion'
+    });
+}else{
+    if(!animalUpdated){
+        res.status(404).send({
+            message:'No se ha actualizado animal'
+        });
+    }else{
+        res.status(200).send({
+            animal: animalUpdated
+        });
+    }
+}
+
+});
+
+
+}
 module.exports = {
     pruebas,
     SaveAnimal,
     getAnimals,
-    getAnimal
+    getAnimal,
+    updateAnimal
 }

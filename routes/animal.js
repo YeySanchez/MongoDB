@@ -14,6 +14,8 @@ api.post('/animal',md_auth.ensureAuth, AnimalController.SaveAnimal);
 api.get('/animals',AnimalController.getAnimals);
 //metodo listar animal unico 
 api.get('/animal/:id',AnimalController.getAnimal);
+//metodo actualizar animal 
+api.put('/animal/:id',md_auth.ensureAuth,AnimalController.updateAnimal);
 
 
 

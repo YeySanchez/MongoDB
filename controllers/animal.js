@@ -112,10 +112,66 @@ if(err){
 
 
 }
+function uploadImage(req, res) {
+    var animalId = req.params.id;
+    var file_name = 'no subido...';
+    if (req.files.image) {
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('\\');
+        var file_name = file_split[2];
+        var ext_split = file_name.split('\.');
+        var file_ext = ext_split[1];
+        if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
+
+            
+            Animal.findByIdAndUpdate(animalId, { image: file_name }, { new: true }, (err, animalUpdated) => {
+                if (err) {
+                    res.status(500).send({
+                        message: "error al actualizar usuario"
+                    });
+                } else {
+                    if (!animalUpdated) {
+                        res.status(404).send({ message: 'No se ha podido actualizar el animal' });
+                    } else {
+                        res.status(200).send({ animal:animalUpdated, image: file_name });
+                    }
+                }
+            });
+        } else {
+            fs.unlink(file_path, (err) => {
+                if (err) {
+                    res.status(200).send({ message: 'la estension no es vAlida y el fichero' });
+                } else {
+                    res.status(200).send({ message: 'la estension no es valida' });
+                }
+            });
+
+        }
+    } else {
+        res.status(200).send({ message: 'No se ha subido archivos' });
+    }
+}
+
+//v56 metodo devolve foto de usuario v56
+
+function getImageFile(req, res) {
+    var imageFile = req.params.imageFile;
+    var path_file = 'uploads/animal/' + imageFile;
+    fs.access(path_file, (err) => {
+        if (!err) {
+            res.status(200).sendFile(path.resolve(path_file));
+        } else {
+            res.status(404).send({ message: 'File do not exists' });
+        }
+    });
+}
+
 module.exports = {
     pruebas,
     SaveAnimal,
     getAnimals,
     getAnimal,
-    updateAnimal
+    updateAnimal,
+    getImageFile,
+    uploadImage
 }

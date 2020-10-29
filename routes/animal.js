@@ -5,8 +5,9 @@ var AnimalController = require('../controllers/animal');
 //cargar api angular 
 var api = express.Router();
 var md_auth = require('../middlewares/authenticaded');
+//v63 ruta devolver imagen animal 
 var multipart = require('connect-multiparty');
-//v55 crera ruta donde se guardara las imagenes
+//v63 cargar imagenb  imagen animal 
 var md_upload = multipart({uploadDir:'./uploads/animal'});
 
 
@@ -19,10 +20,11 @@ api.get('/animals',AnimalController.getAnimals);
 api.get('/animal/:id',AnimalController.getAnimal);
 //metodo actualizar animal 
 api.put('/animal/:id',md_auth.ensureAuth,AnimalController.updateAnimal);
-
+//v63 ruta devolver imagen animal 
 api.post('/upload-image-animal/:id',[md_auth.ensureAuth,md_upload],AnimalController.uploadImage);
-//v56 ruta devolver imagen usuario 
+//v63 cargar imagenb  imagen animal 
 api.get('/get-image-animal/:imageFile',AnimalController.getImageFile);
-
+//v64 eliminar animal
+api.delete('/animal/:id',md_auth.ensureAuth, AnimalController.deleteAnimal);
 
 module.exports = api;
